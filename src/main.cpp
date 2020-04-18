@@ -69,17 +69,22 @@ void setup()
 
 void loop()
 {
-
+    
     // Potentiometer
     // potentiometer.loop();
 
-    potentiometer.potentiometerValue = analogRead(potentiometer.potentiometerPin);
-        if (abs(potentiometer.potentiometerValue - potentiometer.previousPotentiometerValue) > potentiometer.tolerance)
-        {
-            Serial.println(potentiometer.potentiometerValue);
-            potentiometer.previousPotentiometerValue = potentiometer.potentiometerValue;
-        }
+    
 
+    if (true) {
+        String s = potentiometer.DroneColor();
+        Serial.println(s);
+        Serial.println(s.length());
+
+        Pudp.writeTo((const uint8_t *)"'s'" , s.length(), IPAddress(192, 168, 43, 255), 7000);
+    }
+
+
+    /*
     //pxlserver pixel color change
         if (potentiometer.previousPotentiometerValue < 400)
         {
@@ -117,8 +122,8 @@ void loop()
         {
             Pudp.writeTo((const uint8_t *)"color 90 100 80", 15, IPAddress(192, 168, 43, 255), 7000);
         }
-        
+        */
 
     //Joystick
     joystick.loop();
-}
+};
