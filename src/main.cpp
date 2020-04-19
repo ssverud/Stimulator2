@@ -75,54 +75,20 @@ void loop()
 
     
 
-    if (true) {
-        String s = potentiometer.DroneColor();
-        Serial.println(s);
-        Serial.println(s.length());
+   
+    String s = potentiometer.DroneColor();
+    //Serial.println(s);
+    //Serial.println(s.length());
 
-        Pudp.writeTo((const uint8_t *)"'s'" , s.length(), IPAddress(192, 168, 43, 255), 7000);
+    int sLength = s.length();
+    char char_array[sLength + 1];
+    for(int i=0 ; i < sLength ; i++ ) {
+            char_array[i] = s[i];
     }
 
-
-    /*
-    //pxlserver pixel color change
-        if (potentiometer.previousPotentiometerValue < 400)
-        {
-            Pudp.writeTo((const uint8_t *)"color 80 20 50", 14, IPAddress(192, 168, 43, 255), 7000);
-        }
-        if (potentiometer.previousPotentiometerValue > 400 && potentiometer.previousPotentiometerValue < 800)
-        {
-            Pudp.writeTo((const uint8_t *)"color 200 200 200", 17, IPAddress(192, 168, 43, 255), 7000);
-        }
-        if (potentiometer.previousPotentiometerValue > 800 && potentiometer.previousPotentiometerValue < 1200)
-        {
-            Pudp.writeTo((const uint8_t *)"color 50 50 50", 14, IPAddress(192, 168, 43, 255), 7000);
-        }
-        if (potentiometer.previousPotentiometerValue > 1200 && potentiometer.previousPotentiometerValue < 1600)
-        {
-            Pudp.writeTo((const uint8_t *)"color 50 90 60", 14, IPAddress(192, 168, 43, 255), 7000);
-        }
-        if (potentiometer.previousPotentiometerValue > 1600 && potentiometer.previousPotentiometerValue < 2000)
-        {
-            Pudp.writeTo((const uint8_t *)"color 100 50 200", 16, IPAddress(192, 168, 43, 255), 7000);
-        }
-        if (potentiometer.previousPotentiometerValue > 2000 && potentiometer.previousPotentiometerValue < 2400)
-        {
-            Pudp.writeTo((const uint8_t *)"color 50 200 200", 16, IPAddress(192, 168, 43, 255), 7000);
-        }
-        if (potentiometer.previousPotentiometerValue > 2400 && potentiometer.previousPotentiometerValue < 2800)
-        {
-            Pudp.writeTo((const uint8_t *)"color 50 200 100", 16, IPAddress(192, 168, 43, 255), 7000);
-        }
-        if (potentiometer.previousPotentiometerValue > 3200 && potentiometer.previousPotentiometerValue < 3600)
-        {
-            Pudp.writeTo((const uint8_t *)"color 20 50 50", 14, IPAddress(192, 168, 43, 255), 7000);
-        }
-        if (potentiometer.previousPotentiometerValue > 3600 && potentiometer.previousPotentiometerValue < 4000)
-        {
-            Pudp.writeTo((const uint8_t *)"color 90 100 80", 15, IPAddress(192, 168, 43, 255), 7000);
-        }
-        */
+    Pudp.writeTo((const uint8_t *)char_array, s.length(), IPAddress(192, 168, 43, 255), 7000);
+        
+    
 
     //Joystick
     joystick.loop();

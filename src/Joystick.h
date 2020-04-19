@@ -11,7 +11,7 @@ public:
     int previousJoystickValueX = 0;
     int previousJoystickValueY = 0;
     int joystickButtonPin = 13;
-    int tolerance = 400;
+    int tolerance = 200;
     AsyncUDP Judp;
 
     //joystick constructor
@@ -22,6 +22,11 @@ public:
         pinMode(joystickPinX, INPUT);
         pinMode(joystickPinY, INPUT);
         pinMode(joystickButtonPin, INPUT_PULLUP);
+    }
+
+    String JoystickMove() {
+
+        
     }
 
     // Joystick loop
@@ -36,8 +41,10 @@ public:
         {
 
             //Serial.print(map(analogRead(pinX), 0, 4095, -100, 100));
+            Serial.print("X: ");
             Serial.print(previousJoystickValueX);
             Serial.print(" : ");
+            Serial.print("Y: ");
             Serial.println(previousJoystickValueY);
             //Serial.println(map(analogRead(pinY), 0, 4095, 100, -100));
             previousJoystickValueX = analogRead(joystickPinX);
@@ -53,17 +60,17 @@ public:
         }
 
         //pixel moveup
-        if (previousJoystickValueY > 2000)
+        if (previousJoystickValueY > 3500)
         {
             Judp.writeTo((const uint8_t *)"moveup", 6, IPAddress(192, 168, 43, 255), 7000);
         }
         //pixel movedown
-        if (previousJoystickValueY < 1000)
+        if (previousJoystickValueY < 1500)
         {
             Judp.writeTo((const uint8_t *)"movedown", 8, IPAddress(192, 168, 43, 255), 7000);
         }
         //pixel move right
-        if (previousJoystickValueX < 1000)
+        if (previousJoystickValueX < 600)
         {
             Judp.writeTo((const uint8_t *)"moveright", 9, IPAddress(192, 168, 43, 255), 7000);
         }
