@@ -3,12 +3,13 @@
 #include "AsyncUDP.h"
 #include "Joystick.h"
 #include "Potentiometer.h"
+#include "LcdScreen.h"
 
 const char *ssid = "AndroidAPC910";
 const char *password = "fnsa6355";
 
 AsyncUDP udp;
-AsyncUDP Pudp;
+AsyncUDP Judp;
 
 Joystick joystick(36, 39);
 Potentiometer potentiometer(34);
@@ -72,24 +73,29 @@ void loop()
     
     // Potentiometer
     // potentiometer.loop();
-
-    
-
    
     String s = potentiometer.DroneColor();
     //Serial.println(s);
     //Serial.println(s.length());
 
     int sLength = s.length();
-    char char_array[sLength + 1];
+    char charArrayPotentiometer[sLength + 1];
     for(int i=0 ; i < sLength ; i++ ) {
-            char_array[i] = s[i];
+            charArrayPotentiometer[i] = s[i];
     }
 
-    Pudp.writeTo((const uint8_t *)char_array, s.length(), IPAddress(192, 168, 43, 255), 7000);
-        
+    udp.writeTo((const uint8_t *)charArrayPotentiometer, s.length(), IPAddress(192, 168, 43, 255), 7000);
+
+    String j = joystick.JoystickMove();
+    int jLength = j.length();
+    char charArrayJoystick[jLength + 1];
+    for(int i=0 ; i < jLength ; i++) {
+        charArrayJoystick[i] = j[i];
+    }       
     
+    Judp.writeTo((const uint8_t *)charArrayJoystick, j.length(), IPAddress(192, 168, 43, 255), 7000);
+
 
     //Joystick
-    joystick.loop();
+    //joystick.loop();
 };

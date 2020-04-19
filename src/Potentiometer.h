@@ -18,7 +18,6 @@ public:
 
     String DroneColor() {
         
-        
         potentiometerValue = analogRead(potentiometerPin);
         if (abs(potentiometerValue - previousPotentiometerValue) > tolerance)
         {
@@ -49,19 +48,4 @@ public:
         }
         return "no color";    
     }
-
-    /*
-    // Potentiometer loop
-    void loop()
-    {
-        potentiometerValue = analogRead(potentiometerPin);
-        if (abs(potentiometerValue - previousPotentiometerValue) > tolerance)
-        {
-            Serial.println(potentiometerValue);
-            previousPotentiometerValue = potentiometerValue;
-        }
-    }
-    */
-   
-
 };

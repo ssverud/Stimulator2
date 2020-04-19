@@ -25,59 +25,46 @@ public:
     }
 
     String JoystickMove() {
-
-        
-    }
-
-    // Joystick loop
-    void loop()
-    {
         joystickValueX = analogRead(joystickPinX);
         joystickValueY = analogRead(joystickPinY);
 
         //only update if bigger than tolerance
         if (abs(joystickValueX - previousJoystickValueX) > tolerance ||
-            abs(joystickValueY - previousJoystickValueY) > tolerance)
+            abs(joystickValueY - previousJoystickValueY) > tolerance) 
         {
-
-            //Serial.print(map(analogRead(pinX), 0, 4095, -100, 100));
-            Serial.print("X: ");
-            Serial.print(previousJoystickValueX);
-            Serial.print(" : ");
-            Serial.print("Y: ");
-            Serial.println(previousJoystickValueY);
-            //Serial.println(map(analogRead(pinY), 0, 4095, 100, -100));
-            previousJoystickValueX = analogRead(joystickPinX);
-            previousJoystickValueY = analogRead(joystickPinY);
+        //Serial.print(map(analogRead(pinX), 0, 4095, -100, 100));
+        Serial.print("X: ");
+        Serial.print(previousJoystickValueX);
+        Serial.print(" : ");
+        Serial.print("Y: ");
+        Serial.println(previousJoystickValueY);
+        //Serial.println(map(analogRead(pinY), 0, 4095, 100, -100));
+        previousJoystickValueX = analogRead(joystickPinX);
+        previousJoystickValueY = analogRead(joystickPinY);
         }
 
         //if clicked on joystick initiate pixel
-        if (digitalRead(joystickButtonPin) == LOW)
-        
-        {
+        if (digitalRead(joystickButtonPin) == LOW) {
             Serial.println("CLICKED ON");
-            Judp.writeTo((const uint8_t *)"init 10 10", 10, IPAddress(192, 168, 43, 255), 7000);
+            return "init 10 10";
         }
-
         //pixel moveup
-        if (previousJoystickValueY > 3500)
-        {
-            Judp.writeTo((const uint8_t *)"moveup", 6, IPAddress(192, 168, 43, 255), 7000);
+        else if (previousJoystickValueY > 3500){
+            return "moveup";
         }
         //pixel movedown
-        if (previousJoystickValueY < 1500)
-        {
-            Judp.writeTo((const uint8_t *)"movedown", 8, IPAddress(192, 168, 43, 255), 7000);
+        else if (previousJoystickValueY < 1500){
+            return "movedown";
         }
         //pixel move right
-        if (previousJoystickValueX < 600)
-        {
-            Judp.writeTo((const uint8_t *)"moveright", 9, IPAddress(192, 168, 43, 255), 7000);
+        else if (previousJoystickValueX < 600){
+            return "moveright";
         }
         //pixel move left
-        if (previousJoystickValueX > 2000)
-        {
-            Judp.writeTo((const uint8_t *)"moveleft", 8, IPAddress(192, 168, 43, 255), 7000);
+        else if (previousJoystickValueX > 2000){
+            return "moveleft";
         }
+        return "0";
     }
 };
+
