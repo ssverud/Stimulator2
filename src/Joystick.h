@@ -46,7 +46,7 @@ public:
         //if clicked on joystick initiate pixel
         if (digitalRead(joystickButtonPin) == LOW) {
             Serial.println("CLICKED ON");
-            return "init 10 10";
+            return "init";
         }
         //pixel moveup
         else if (previousJoystickValueY > 3500){
