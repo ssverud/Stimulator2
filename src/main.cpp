@@ -3,7 +3,9 @@
 #include "AsyncUDP.h"
 #include "Joystick.h"
 #include "Potentiometer.h"
-#include "LcdScreen.h"
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x3F,16,2);  // set the LCD address 
+                                    // to 0x3F for a 16 chars and 1 line display
 
 const char *ssid = "AndroidAPC910";
 const char *password = "fnsa6355";
@@ -14,8 +16,19 @@ AsyncUDP Judp;
 Joystick joystick(36, 39);
 Potentiometer potentiometer(34);
 
+
 void setup()
 {
+    // initialize the lcd 
+    lcd.init();
+
+    // Print a message to the LCD.
+    
+    lcd.backlight();
+    lcd.setCursor(0,0);
+    lcd.print("Press joystick");
+    
+
     Serial.begin(9600);
 
 
@@ -23,6 +36,8 @@ void setup()
     //Connection to pxlserver
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
+    
+
 
     if (WiFi.waitForConnectResult() != WL_CONNECTED)
     {
@@ -32,6 +47,7 @@ void setup()
             delay(1000);
         }
     }
+        
     if (udp.listen(7007))
     {
         Serial.print("UDP Listening on IP: ");
@@ -52,17 +68,18 @@ void setup()
             Serial.print(", Data: ");
             Serial.write(packet.data(), packet.length());
             Serial.println();
+            
             //reply to the client
             packet.printf("Got %u bytes of data", packet.length());
             Serial.print("state: ");
-            /*  Serial.write(packet.data(), packet.length());
+
+            // convertion of packetdata to string
             String s((char*)packet.data());
             s = s.substring(0, packet.length()); 
             s.trim();
-            // send string to method
-            Serial.println(s);
-            udp.printf("Received your message!");
-        */
+            lcd.clear();
+            lcd.print(s);
+
        Serial.println();
         });
     }
@@ -70,14 +87,8 @@ void setup()
 
 void loop()
 {
-    
-    // Potentiometer
-    // potentiometer.loop();
-   
+    // Potentiometer color change   
     String s = potentiometer.DroneColor();
-    //Serial.println(s);
-    //Serial.println(s.length());
-
     int sLength = s.length();
     char charArrayPotentiometer[sLength + 1];
     for(int i=0 ; i < sLength ; i++ ) {
@@ -86,6 +97,7 @@ void loop()
 
     udp.writeTo((const uint8_t *)charArrayPotentiometer, s.length(), IPAddress(192, 168, 43, 255), 7000);
 
+    //joystick
     String j = joystick.JoystickMove();
     int jLength = j.length();
     char charArrayJoystick[jLength + 1];
@@ -95,7 +107,4 @@ void loop()
     
     Judp.writeTo((const uint8_t *)charArrayJoystick, j.length(), IPAddress(192, 168, 43, 255), 7000);
 
-
-    //Joystick
-    //joystick.loop();
 };
